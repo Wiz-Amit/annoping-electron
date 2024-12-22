@@ -17,6 +17,7 @@
   "build": {
     "appId": "com.example.annoping",
     "win": {
+      "icon": "icon.ico",
       "target": [
         {
           "target": "portable",
