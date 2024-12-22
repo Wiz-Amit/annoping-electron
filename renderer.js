@@ -5,8 +5,13 @@ let progressIntervalId;
 
 document.getElementById("start-stop-button").addEventListener("click", () => {
   const button = document.getElementById("start-stop-button");
-  const messages = document.getElementById("messages").value.split(",");
-  const interval = parseInt(document.getElementById("interval").value) * 1000;
+  const messages = document
+    .getElementById("messages")
+    .value.split(",")
+    .map((msg) => msg.trim())
+    .filter((msg) => msg.length > 0);
+  const userInterval =
+    parseInt(document.getElementById("interval").value) * 1000;
   const notificationCountElement =
     document.getElementById("notification-count");
   const progressElement = document.getElementById("progress");
@@ -19,8 +24,7 @@ document.getElementById("start-stop-button").addEventListener("click", () => {
     isRunning = false;
     progressElement.style.width = "0";
   } else {
-    if (messages.length === 0 || isNaN(interval) || interval <= 0) {
-      alert("Please enter valid messages and interval.");
+    if (messages.length === 0 || isNaN(userInterval) || userInterval <= 0) {
       return;
     }
 
@@ -28,21 +32,20 @@ document.getElementById("start-stop-button").addEventListener("click", () => {
     notificationCountElement.innerText = `Notifications fired: ${notificationCount}`;
 
     intervalId = setInterval(() => {
-      const message =
-        messages[Math.floor(Math.random() * messages.length)].trim();
-      new Notification("Notification", {
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      new Notification(`Notification: ${notificationCount + 1}`, {
         body: message,
         icon: "icon.png", // Add the icon here
       });
       notificationCount++;
       notificationCountElement.innerText = `Notifications fired: ${notificationCount}`;
       progressElement.style.width = "0";
-    }, interval);
+    }, userInterval);
 
     progressIntervalId = setInterval(() => {
       const progressWidth = parseFloat(progressElement.style.width) || 0;
       progressElement.style.width = `${progressWidth + 1}%`;
-    }, interval / 100);
+    }, userInterval / 100);
 
     button.innerText = "Stop";
     button.style.backgroundColor = "red";
