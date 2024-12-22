@@ -4,12 +4,27 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "package": "electron-builder --win portable",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "electron": "^33.2.1"
+    "electron": "^33.2.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.annoping",
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
   }
 }
