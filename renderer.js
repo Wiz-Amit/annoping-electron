@@ -1,6 +1,7 @@
 let intervalId;
 let isRunning = false;
 let notificationCount = 0;
+let progressIntervalId;
 
 document.getElementById("start-stop-button").addEventListener("click", () => {
   const button = document.getElementById("start-stop-button");
@@ -8,12 +9,15 @@ document.getElementById("start-stop-button").addEventListener("click", () => {
   const interval = parseInt(document.getElementById("interval").value) * 1000;
   const notificationCountElement =
     document.getElementById("notification-count");
+  const progressElement = document.getElementById("progress");
 
   if (isRunning) {
     clearInterval(intervalId);
+    clearInterval(progressIntervalId);
     button.innerText = "Start";
     button.style.backgroundColor = "";
     isRunning = false;
+    progressElement.style.width = "0";
   } else {
     if (messages.length === 0 || isNaN(interval) || interval <= 0) {
       alert("Please enter valid messages and interval.");
@@ -29,7 +33,13 @@ document.getElementById("start-stop-button").addEventListener("click", () => {
       new Notification("Notification", { body: message });
       notificationCount++;
       notificationCountElement.innerText = `Notifications fired: ${notificationCount}`;
+      progressElement.style.width = "0";
     }, interval);
+
+    progressIntervalId = setInterval(() => {
+      const progressWidth = parseFloat(progressElement.style.width) || 0;
+      progressElement.style.width = `${progressWidth + 1}%`;
+    }, interval / 100);
 
     button.innerText = "Stop";
     button.style.backgroundColor = "red";
