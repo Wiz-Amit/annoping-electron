@@ -30,7 +30,10 @@ document.getElementById("start-stop-button").addEventListener("click", () => {
     intervalId = setInterval(() => {
       const message =
         messages[Math.floor(Math.random() * messages.length)].trim();
-      new Notification("Notification", { body: message });
+      new Notification("Notification", {
+        body: message,
+        icon: "icon.png", // Add the icon here
+      });
       notificationCount++;
       notificationCountElement.innerText = `Notifications fired: ${notificationCount}`;
       progressElement.style.width = "0";
